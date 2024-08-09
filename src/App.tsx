@@ -1,13 +1,12 @@
-// import Upload from "./routes/upload" 
 
-import Upload from "./routes/Upload"
-
-
+import Upload from "./routes/Upload";
 function App() {
+
   return (
-    <> 
-    <Upload/>
-    </>
+
+    <div> 
+    </div>
+
   )
 }
 

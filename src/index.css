@@ -1,5 +1,6 @@
 @import url(App.css);
 @import url(./styles/upload.css);
+@import url(./styles/home.css);
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
