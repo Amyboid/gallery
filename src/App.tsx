@@ -1,11 +1,12 @@
 
-import Upload from "./routes/Upload";
+import Home from "./routes/Home"; 
 function App() {
 
   return (
 
-    <div> 
-    </div>
+    <>
+      <Home />
+    </>
 
   )
 }
