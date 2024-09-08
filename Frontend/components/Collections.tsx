@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 import { backgroundAtom, urlAtom } from "./states";
-
+import axios from "axios";
 
 interface CollectionFrameProps {
   nameis: string;
@@ -65,8 +65,21 @@ export default function Collections() {
         "date": date,
         "backGroundUrl": url
       }
-      // let existingCol = JSON.parse(localStorage.getItem("myCol") || "[]");
-      // localStorage.setItem("myCol", JSON.stringify([...existingCol, newCollection]))
+
+      if (!backGround) {
+        console.log("no file selected");
+        return;
+      }
+
+      const formData = new FormData();
+      let responseData:string;
+      formData.append('backgrounds', backGround)
+      axios.post("http://localhost:8080/upload", formData).then((res)=>{
+        responseData = res.data;
+        return axios.get(`http://localhost:8080/getback/${responseData}`)
+      }).then((res)=>console.log(res)).catch((err)=>console.log(err))
+
+  
 
       setCollections((prev) => [...prev, newCollection])
       setName("")
@@ -75,16 +88,22 @@ export default function Collections() {
       setisCollectionsVisible(true)
 
     }
-    if (backGround) {
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        setUrl(event.target?.result)
-        console.log("hilll:  ", typeof (url));
-      };
-      reader.readAsDataURL(backGround);
+    function getBackgrounds() {
+
     }
 
-// getting focus back to input field after typing one word
+
+    // if (backGround) {
+    //   const reader = new FileReader();
+    //   reader.onload = async function (event) {
+    //     console.log("url::::",event.target);
+
+    //     setUrl(event.target?.result)
+    //   };
+    //   reader.readAsDataURL(backGround);
+    // }
+
+    // getting focus back to input field after typing one word
     useEffect(() => {
       if (nameInputRef.current) {
         nameInputRef.current.focus();
@@ -94,7 +113,7 @@ export default function Collections() {
     return (
       <>
         <button className="close-btn" onClick={closeForm}>X</button>
-        <form action="" className="creation-form" onSubmit={createCollection}>
+        <form className="creation-form" onSubmit={createCollection}>
           <div className="name">
             <label htmlFor="name">Collection Name</label>
             <input ref={nameInputRef} value={name} type="text" onChange={(e) => setName(e.target.value)} />
