@@ -1,38 +1,29 @@
 import { useState } from "react";
 
 export default function Upload() {
-  const [photosURL, setPhotosURL] = useState<string[]>([]);
+  const [photosURL, setPhotosURL] = useState<File | null>(null);
 
-  function handleUpload() {
-    const selectedFilelist = (
-      document.getElementById("upload") as HTMLInputElement
-    ).files!;
-    Array.from(selectedFilelist).map((file) => {
-      const fileReader = new FileReader();
-      fileReader.onload = () => {
-        const imageURL = fileReader.result as string;
-        setPhotosURL((prev) => [...prev, imageURL]);
-      };
-      fileReader.readAsDataURL(file);
-    });
-    photosURL.map((url) => {
-      console.log(url);
-    });
-  }
+  // function handleUpload(e:any) {
+  //   e.preventDefault();
+  //   console.log(e.target.file);
+  //   console.log(photosURL);
+  
+  
+  // }
+  
+  // onSubmit={handleUpload}
 
   return (
-    <div>
-      <input type="file" name="upload" id="upload" multiple />
-      <input
-        type="button"
-        value="upload"
-        id="upload-btn"
-        onClick={handleUpload}
-      />
-      <h1>Images</h1>
-      {photosURL.map((url) => {
-        return <img className="uploaded-image" src={url} alt="" />;
-      })}
-    </div>
+    <form action="http://localhost:8080/tempstore" method="post" >
+      <input type="file" name="upload" id="upload" multiple onChange={(e) => {
+        if (!e.target.files) {
+          return
+        }
+        setPhotosURL(e.target.files[0])
+      }} />
+      <button type="submit">
+        Click!
+      </button>
+    </form>
   );
 }

@@ -1,6 +1,4 @@
-import Collections from "../../components/Collections"
-
- 
+import Coll from "../../components/Coll"  
 
 export default function Home() {
 
@@ -9,7 +7,7 @@ export default function Home() {
   return (
     <div className="container">
       <div className="nav">
-        <header>Gallery</header>
+        <header>FrameNest</header>
         <div className="nav-links">
           {
             navUrl.map((e,i) => (
@@ -18,8 +16,8 @@ export default function Home() {
           }
         </div>
       </div>
-      <div className="upload">
-        <Collections></Collections>
+      <div className="upload">  
+        <Coll></Coll>
       </div>
     </div>
   )
