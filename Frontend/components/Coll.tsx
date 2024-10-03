@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Form from "./Form";
-import { Link } from "wouter"; 
-import { testDataAtom } from "../src/context";
+import { Link } from "wouter";
+import { collectionAtom, isCollectionsVisibleAtom, testDataAtom } from "../src/context";
 import { useAtom } from "jotai";
 
 interface CollectionFrameProps {
@@ -13,130 +13,11 @@ interface CollectionFrameProps {
   imgId: string;
   ondelete: (id: number, imgId: string) => void;
 }
-
-interface CollectionProps {
-  id: number;
-  name: string;
-  date: string;
-  bg: string;
-  imgId: string;
+interface NewCollectionPromptProps {
+  onclicks: () => void;
 }
 
-export default function Coll() {
-  const [isFormVisible, setisFormVisible] = useState(false);
-  const [isBlinking, setIsBlinking] = useState(false);
-  const [isCollectionsVisible, setisCollectionsVisible] = useState(true);
-  const [collectionError, setCollectionError] = useState("");
-  const [collection, setCollections] = useState<CollectionProps[]>([]);
-  const [loading, setLoading] = useState(false);
 
-  const [_, setTestData] = useAtom(testDataAtom);
-  const storeTestdata = (data: any) => {
-    const array = data.reduce((array: any, current: any) => {
-      if (!array.includes(current.name)) {
-        array.push(current.name);
-      }
-      return array;
-    }, []);
-    return array;
-  };
-  const fetchData = async () => {
-    const res = await axios.get("http://localhost:8080/getdata");
-    try {
-      setLoading(false);
-      const data = res.data;
-      setCollections([...data]);
-    } catch (error) {
-      console.log("errr:", error);
-    }
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      fetchData();
-      // storeTestdata
-    }, 100);
-  }, []);
-
-  useEffect(() => {
-    const ddd = storeTestdata(collection);
-    // console.log("kl: ", ddd, "gh", collection);
-    setTestData([...ddd]);
-    if (collection.length >= 1) {
-      setisCollectionsVisible(true);
-    } else {
-      setisCollectionsVisible(false);
-    }
-  }, [collection]);
-
-  function OpenForm() {
-    setisFormVisible(true);
-  }
-
-  function handleDelete(id: number, imgId: string) {
-    setCollections(collection.filter((item) => item.id !== id));
-    axios.delete("http://localhost:8080/deletedata", { data: { id, imgId } });
-  }
-
-  function NewCollectionPrompt() {
-    return (
-      <>
-        <p>You have no collections</p>
-        <button className="create-btn" onClick={OpenForm}>
-          + Create New
-        </button>
-      </>
-    );
-  }
-  return (
-    <div className="collection-box">
-      <header className={loading ? "loading" : ""}>
-        <span>
-          Collections
-          <p className={isBlinking ? "blink" : ""}>{collectionError}</p>
-        </span>
-        {/* <div className="logo"> 
-        <svg xmlns="http://www.w3.org/2000/svg" className="logo-1" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" className="logo-2" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" className="logo-3" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
-        </div> */}
-        <button onClick={OpenForm}>+ Create New</button>
-      </header>
-      <div className="collections">
-        {isCollectionsVisible &&
-          collection.map((item) => (
-            // <Route path={item.name}>
-            // </Route>
-            <CollectionFrame
-              key={item.id}
-              id={item.id}
-              imgId={item.imgId}
-              bg={item.bg}
-              nameis={item.name}
-              dateis={item.date}
-              ondelete={handleDelete}
-            />
-          ))}
-
-        <div className="create-col">
-          {!isCollectionsVisible && !isFormVisible && <NewCollectionPrompt />}
-          {isFormVisible && (
-            <Form
-              collection={collection}
-              setLoading={setLoading}
-              setIsBlinking={setIsBlinking}
-              setCollectionError={setCollectionError}
-              setisCollectionsVisible={setisCollectionsVisible}
-              setCollections={setCollections}
-              setisFormVisible={setisFormVisible}
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function CollectionFrame({
   nameis,
@@ -155,10 +36,10 @@ function CollectionFrame({
   return (
     <>
       <div className="collection-frame" ref={frameRef}>
-        <Link href={`upload/${nameis}`}>
+        <Link href={`upload/${id}`}>
           <div className="frame-hero"></div>
         </Link>
-
+        
         <div className="frame-footer">
           <span className="name-is">{nameis}</span>
           <span className="date-is">{dateis}</span>
@@ -181,6 +62,123 @@ function CollectionFrame({
     </>
   );
 }
-// function gooBaby() {
-//   console.log('not implemented yt');
-// }
+
+function NewCollectionPrompt({onclicks}: NewCollectionPromptProps) {
+  return (
+    <>
+      <p>You have no collections</p>
+      <button className="create-btn" onClick={() => onclicks()}>
+        + Create New
+      </button>
+    </>
+  );
+}
+
+
+
+export default function Coll() {
+  // const [collection, setCollection] = useState<CollectionProps[]>([]);
+  // const [isCollectionsVisible, setisCollectionsVisible] = useState(true);
+  const [isFormVisible, setisFormVisible] = useState(false);
+  const [isBlinking, setIsBlinking] = useState(false);
+  const [collectionError, setCollectionError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const [_, setTestData] = useAtom(testDataAtom);
+  const [collection, setCollection] = useAtom(collectionAtom)
+  const [isCollectionsVisible, setisCollectionsVisible] = useAtom(isCollectionsVisibleAtom)
+
+  const storeTestdata = (data: any) => {
+    const array = data.reduce((array: any, current: any) => {
+      // console.log('current: ',);
+      
+      if (!array.includes(current.id.toString())) {
+        array.push(current.id.toString());
+      }
+      return array;
+    }, []);
+    return array;
+  };
+  const fetchData = async () => {
+    const res = await axios.get("http://localhost:8080/getdata");
+    try {
+      setLoading(false);
+      const data = res.data;
+      setCollection([...data]);
+    } catch (error) {
+      console.log("errr:", error);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      fetchData(); 
+    }, 100);
+  }, []);
+
+  useEffect(() => {
+    const ddd = storeTestdata(collection); 
+    setTestData([...ddd]);
+    if (collection.length >= 1) {
+      setisCollectionsVisible(true);
+    } else {
+      setisCollectionsVisible(false);
+    }
+  }, [collection]);
+
+  function OpenForm() {
+    setisFormVisible(true);
+  }
+
+  function handleDelete(id: number, imgId: string) {
+    setCollection(collection.filter((item) => item.id !== id));
+    axios.delete("http://localhost:8080/deletedata", { data: { id, imgId } });
+  }
+
+  return (
+    <div className="collection-box">
+      <header className={loading ? "loading" : ""}>
+        <span>
+          Collections
+          <p className={isBlinking ? "blink" : ""}>{collectionError}</p>
+        </span>
+        {/* <div className="logo"> 
+        <svg xmlns="http://www.w3.org/2000/svg" className="logo-1" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" className="logo-2" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" className="logo-3" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
+        </div> */}
+        <button onClick={OpenForm}>+ Create New</button>
+      </header>
+      <div className="collections">
+        {isCollectionsVisible &&
+          collection.map((item) => (
+            
+            <CollectionFrame
+              key={item.id}
+              id={item.id}
+              imgId={item.imgId}
+              bg={item.bg}
+              nameis={item.name}
+              dateis={item.date}
+              ondelete={handleDelete}
+            />
+          ))}
+
+        <div className="create-col">
+          {!isCollectionsVisible && !isFormVisible && (
+            <NewCollectionPrompt onclicks={OpenForm} />
+          )}
+          {isFormVisible && (
+            <Form 
+              setLoading={setLoading}
+              setIsBlinking={setIsBlinking}
+              setCollectionError={setCollectionError}  
+              setisFormVisible={setisFormVisible}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

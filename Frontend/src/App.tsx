@@ -1,21 +1,14 @@
-
-import {  useEffect } from "react";
-import Home from "./routes/Home";
-// import Upload from "./routes/Upload";
-import { Route } from "wouter"; 
-import { useAtom } from "jotai";
-import { testDataAtom } from "./context";
+import Home from "./routes/Home"; 
+import { Route } from "wouter";
+import Gallery from "../components/Gallery";
 function App() {
+    return (
+    <>
+      <Route path="/" component={Home} />
 
-
-  const [testData,_] = useAtom(testDataAtom)
-  useEffect(()=>{
-    console.log('testdata',testData); 
-  },[testData])
-  
-  return ( 
-        <Home /> 
-  )
+      <Route path="/upload/:collId" component={Gallery} />
+    </>
+  );
 }
 
-export default App
+export default App;

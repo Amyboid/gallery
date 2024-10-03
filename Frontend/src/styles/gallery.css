@@ -1,0 +1,95 @@
+
+
+.g-container{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 100vh;
+}
+.g-navbar{
+    position: relative;
+    width: 100%;
+    border-right: 10px solid #f8f8f8ae;
+}
+
+.g-layout{
+    border: 10px solid var(--sec-col);
+    width: 85%;
+    height: 35%;
+    position: absolute;
+    top: 60px;
+    right: 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    background-color: #f8f8f8ae;
+    transition: all 0.3s;
+}
+.g-layout:hover{
+    background-color: #fff;
+
+}
+.g-lay{
+    width: 80%;
+    aspect-ratio: 1;
+    background-color: var(--pri-col);
+    border: 1px solid transparent;
+    transition: border 0.3s;
+}
+.g-lay:hover{
+    border-color: var(--qua-col);
+}
+
+.g-preview{
+    border: 10px solid var(--sec-col);
+    position: absolute;
+    width: 85%;
+    height: 30%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-clip: border-box;
+    bottom: 22px;
+    left: 22px;
+    transition: all 0.2s;
+}
+
+.g-preview:hover{ 
+    rotate: 5deg;
+}
+.g-preview span{
+    width: 15px;
+    aspect-ratio: 1;
+    display: block;
+    border-radius: 50%;
+    background-color: var(--sec-col);
+    box-shadow: 1px 1px 2px 1px rgb(161, 161, 161);
+    position: absolute;
+    top: -50px;
+    left: 50%;
+}
+.g-photos-box{
+    display: flex;
+    flex-direction: column;
+}
+
+.g-photos-nav{
+    height: 8%; 
+    background-color: #f8f8f8ae;
+    position: relative;
+}
+.g-create-btn{
+    height: 100%;
+    font-weight: bold; 
+    padding: 10px;
+    background-color: var(--sec-col);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.g-photos{
+    height: 90%;    
+}
