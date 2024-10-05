@@ -6,6 +6,7 @@ interface CollectionProps {
   date: string;
   bg: string;
   imgId: string;
+  galleryFolder:string;
 }
 
 export const testDataAtom = atom<string[] | null>(null);

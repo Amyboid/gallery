@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Form from "./Form";
 import { Link } from "wouter";
-import { collectionAtom, isCollectionsVisibleAtom, testDataAtom } from "../src/context";
+import {
+  collectionAtom,
+  isCollectionsVisibleAtom,
+  testDataAtom,
+} from "../src/context";
 import { useAtom } from "jotai";
 
 interface CollectionFrameProps {
@@ -16,8 +20,6 @@ interface CollectionFrameProps {
 interface NewCollectionPromptProps {
   onclicks: () => void;
 }
-
-
 
 function CollectionFrame({
   nameis,
@@ -39,7 +41,7 @@ function CollectionFrame({
         <Link href={`upload/${id}`}>
           <div className="frame-hero"></div>
         </Link>
-        
+
         <div className="frame-footer">
           <span className="name-is">{nameis}</span>
           <span className="date-is">{dateis}</span>
@@ -63,7 +65,7 @@ function CollectionFrame({
   );
 }
 
-function NewCollectionPrompt({onclicks}: NewCollectionPromptProps) {
+function NewCollectionPrompt({ onclicks }: NewCollectionPromptProps) {
   return (
     <>
       <p>You have no collections</p>
@@ -74,8 +76,6 @@ function NewCollectionPrompt({onclicks}: NewCollectionPromptProps) {
   );
 }
 
-
-
 export default function Coll() {
   // const [collection, setCollection] = useState<CollectionProps[]>([]);
   // const [isCollectionsVisible, setisCollectionsVisible] = useState(true);
@@ -85,13 +85,13 @@ export default function Coll() {
   const [loading, setLoading] = useState(false);
 
   const [_, setTestData] = useAtom(testDataAtom);
-  const [collection, setCollection] = useAtom(collectionAtom)
-  const [isCollectionsVisible, setisCollectionsVisible] = useAtom(isCollectionsVisibleAtom)
+  const [collection, setCollection] = useAtom(collectionAtom);
+  const [isCollectionsVisible, setisCollectionsVisible] = useAtom(
+    isCollectionsVisibleAtom
+  );
 
   const storeTestdata = (data: any) => {
-    const array = data.reduce((array: any, current: any) => {
-      // console.log('current: ',);
-      
+    const array = data.reduce((array: any, current: any) => { 
       if (!array.includes(current.id.toString())) {
         array.push(current.id.toString());
       }
@@ -105,6 +105,7 @@ export default function Coll() {
       setLoading(false);
       const data = res.data;
       setCollection([...data]);
+      console.log("voy", collection);
     } catch (error) {
       console.log("errr:", error);
     }
@@ -113,12 +114,12 @@ export default function Coll() {
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      fetchData(); 
+      fetchData();
     }, 100);
   }, []);
 
   useEffect(() => {
-    const ddd = storeTestdata(collection); 
+    const ddd = storeTestdata(collection);
     setTestData([...ddd]);
     if (collection.length >= 1) {
       setisCollectionsVisible(true);
@@ -153,7 +154,6 @@ export default function Coll() {
       <div className="collections">
         {isCollectionsVisible &&
           collection.map((item) => (
-            
             <CollectionFrame
               key={item.id}
               id={item.id}
@@ -170,10 +170,10 @@ export default function Coll() {
             <NewCollectionPrompt onclicks={OpenForm} />
           )}
           {isFormVisible && (
-            <Form 
+            <Form
               setLoading={setLoading}
               setIsBlinking={setIsBlinking}
-              setCollectionError={setCollectionError}  
+              setCollectionError={setCollectionError}
               setisFormVisible={setisFormVisible}
             />
           )}

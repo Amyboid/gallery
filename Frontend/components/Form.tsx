@@ -17,16 +17,14 @@ export default function Form({
 }: FormProps) {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  // const [bg, setBg] = useState("")
   const [imgId, _] = useState("");
+  const [galleryFolder, __] = useState("");
   const [bg, setBg] = useState<File | null>(null);
 
   const [formError, setFormError] = useState("");
 
   const [, setCollection] = useAtom(collectionAtom);
-  const [, setisCollectionsVisible] = useAtom(
-    isCollectionsVisibleAtom
-  );
+  const [, setisCollectionsVisible] = useAtom(isCollectionsVisibleAtom);
 
   useEffect(() => {
     if (name || date || bg) {
@@ -64,8 +62,8 @@ export default function Form({
       date: date,
       bg: bg,
       imgId: imgId,
+      galleryFolder: galleryFolder,
     };
-
 
     const maxFileSize = 2 * 1024 * 1024;
 
@@ -77,7 +75,6 @@ export default function Form({
 
       const formdata = new FormData();
       formdata.append("file", bg);
-      console.log("basss: ", formdata);
       axios
         .post("http://localhost:8080/storebackground", formdata, {
           headers: {
@@ -89,17 +86,15 @@ export default function Form({
             errorBlink(res.data.error);
           } else {
             setCollectionError("");
-            newCollection.bg = res.data.url;
-
+            newCollection.bg = res.data.url; 
             newCollection.imgId = res.data.imgId;
-            // console.log('klurl', newCollection.bg, res.data.imgId);
-
+            newCollection.galleryFolder = Date.now() + name;
             axios
-              .post("http://localhost:8080/storedata", newCollection)
-              .then((res) => {
+            .post("http://localhost:8080/storedata", newCollection)
+            .then((res) => {
                 setLoading(false);
-
                 setCollection((prev: any) => [...prev, res.data[0]]);
+                // return res;
               })
               .catch((error) => {
                 console.log("post error: ", error);

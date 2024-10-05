@@ -39,13 +39,7 @@
     padding-top: 20px;
     font-weight: bold;
     font-size: 2.2rem;
-    text-shadow: 2px 4px 0px var(--sec-col);
     transition: all 0.2s;
-}
-
-.nav header:hover {
-    text-shadow: 6px 10px 0px var(--sec-col);
-
 }
 
 .nav-links {
@@ -76,10 +70,6 @@
     /* background-color: var(--ter-col); */
     border-bottom: 1px solid var(--ter-col);
     /* color: var(--qua-col); */
-
-}
-
-.upload {
 
 }
 
