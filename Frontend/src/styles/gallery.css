@@ -2,6 +2,8 @@
   display: grid;
   grid-template-columns: 20% 80%;
   grid-template-rows: 100vh;
+  
+  overflow: scroll;
 }
 .g-navbar {
   position: relative;
@@ -46,37 +48,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-clip: border-box;
-  bottom: 22px;
+  bottom: 12px;
   left: 22px;
-}
-.g-preview-msg {
-  transition: all 0.5s;
-  width: 100%;
-  height: 100%;
-  background-color: #f8f8f8ae; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  opacity: 0;
-}
-.g-preview:hover {
-  rotate: 0deg;
-  animation: till 0.5s ease-in 1;
-}
-.g-preview:hover .g-preview-msg {
-    opacity: 1;
-}
-@keyframes till {
-  0% {
-    rotate: 2deg;
-  }
-  50% {
-    rotate: -2deg;
-  }
-  100% {
-    rotate: 0deg;
-  }
 }
 
 .g-photos-box {
@@ -103,6 +76,104 @@
 }
 
 
-.g-photos {
+/* upload form */
+
+.g-upload-form{
+  position: fixed;
+  z-index: 1;
+  width: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  aspect-ratio: 1;
+  border: 10px solid black;
+}
+.g-create-input{ 
+  font-size: 2rem; 
+}
+.g-upload-btn{
+  width: 6rem;
+  height: 3rem;
+  border: none;
+  outline: none;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+
+
+.prev{
+  width: 100px;
+  aspect-ratio: 1;
+  background-color: red;
+}
+
+
+
+.g-uploaded-img-container {
   height: 90%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40rem, 40rem));
+  grid-template-rows: repeat(auto-fit, minmax(40rem, 40rem)); 
+  gap: 20px;
+  overflow: scroll;
+}
+
+.g-uploaded-img {
+  width: 40rem;
+  
+  height: 40rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+}
+.g-uploaded-img-box{
+  position: relative; 
+  width: max-content;
+  height: max-content;
+}
+.g-uploaded-img:hover{
+  cursor: pointer;
+}
+
+.g-delete-img {
+  width: 1.5rem;
+  position: absolute;
+  bottom: -10px;
+  right: -30px;
+}
+.g-delete-img:hover{
+  cursor: pointer;
+}
+.g-show-single-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: blur 0.5s ease 1;
+  backdrop-filter: blur(10px);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+@keyframes blur {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.g-single-img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.g-close-single-img-btn {
+  position: absolute;
+  cursor: pointer;
+  right: 20px;
+  top: 20px;
+  width: 25px;
+  aspect-ratio: 1;
 }

@@ -45,20 +45,18 @@ function CollectionFrame({
         <div className="frame-footer">
           <span className="name-is">{nameis}</span>
           <span className="date-is">{dateis}</span>
-          <button id="delete-col" onClick={() => ondelete(id, imgId)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                fillRule="evenodd"
-                d="m6.774 6.4l.812 13.648a.8.8 0 0 0 .798.752h7.232a.8.8 0 0 0 .798-.752L17.226 6.4h1.203l-.817 13.719A2 2 0 0 1 15.616 22H8.384a2 2 0 0 1-1.996-1.881L5.571 6.4zM9.5 9h1.2l.5 9H10zm3.8 0h1.2l-.5 9h-1.2zM4.459 2.353l15.757 2.778a.5.5 0 0 1 .406.58L20.5 6.4L3.758 3.448l.122-.69a.5.5 0 0 1 .579-.405m6.29-1.125l3.94.695a.5.5 0 0 1 .406.58l-.122.689l-4.924-.869l.122-.689a.5.5 0 0 1 .579-.406z"
-              />
-            </svg>
-          </button>
+
+          <svg
+            id="delete-col"
+            onClick={() => ondelete(id, imgId)}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M21.03 3L18 20.31c-.17.96-1 1.69-2 1.69H8c-1 0-1.83-.73-2-1.69L2.97 3zM5.36 5L8 20h8l2.64-15zM9 18v-4h4v4zm4-4.82L9.82 10L13 6.82L16.18 10z"
+            />
+          </svg>
         </div>
       </div>
     </>
@@ -91,7 +89,7 @@ export default function Coll() {
   );
 
   const storeTestdata = (data: any) => {
-    const array = data.reduce((array: any, current: any) => { 
+    const array = data.reduce((array: any, current: any) => {
       if (!array.includes(current.id.toString())) {
         array.push(current.id.toString());
       }
@@ -134,7 +132,14 @@ export default function Coll() {
 
   function handleDelete(id: number, imgId: string) {
     setCollection(collection.filter((item) => item.id !== id));
-    axios.delete("http://localhost:8080/deletedata", { data: { id, imgId } });
+    const galleryFolder = collection.map((item) => {
+      if (item.id == id) {
+        return item.galleryFolder;
+      }
+    });
+    axios.delete("http://localhost:8080/deleteData", {
+      data: { id, imgId, galleryFolder },
+    });
   }
 
   return (
@@ -144,11 +149,7 @@ export default function Coll() {
           Collections
           <p className={isBlinking ? "blink" : ""}>{collectionError}</p>
         </span>
-        {/* <div className="logo"> 
-        <svg xmlns="http://www.w3.org/2000/svg" className="logo-1" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" className="logo-2" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" className="logo-3" fill="currentColor" viewBox="0 0 24 24"><path d="M19.5 4.5h-7.319C7.87 4.5 4.5 7.787 4.5 12.031V22H2v-9.969C2 6.487 6.562 2 12.181 2H22v9.969C22 17.512 17.438 22 11.819 22H6.375V11.581a6.26 6.26 0 0 1 6.163-5.206H17v2.5h-4.169c-1.881 0-3.212.781-3.75 2.5H17v2.5H8.875V19.5h2.944c4.312 0 7.681-3.288 7.681-7.531z"/></svg>
-        </div> */}
+
         <button onClick={OpenForm}>+ Create New</button>
       </header>
       <div className="collections">

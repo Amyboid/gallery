@@ -2,7 +2,7 @@ import Coll from "../../components/Coll"
 
 export default function Home() {
 
-  const navUrl = ['Collections', 'Settings']
+  const navUrl = ['Home']
 
   return (
     <div className="container">

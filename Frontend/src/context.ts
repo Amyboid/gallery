@@ -6,9 +6,11 @@ interface CollectionProps {
   date: string;
   bg: string;
   imgId: string;
-  galleryFolder:string;
+  galleryFolder: string;
+  images: string[];
+  imageIds: string[]
 }
 
 export const testDataAtom = atom<string[] | null>(null);
-export const collectionAtom = atom<CollectionProps[]>([]); 
+export const collectionAtom = atom<CollectionProps[]>([]);
 export const isCollectionsVisibleAtom = atom(true);
